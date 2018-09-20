@@ -13,15 +13,18 @@ void Lookup(std::ofstream &ofs, std::string Word, int lineNum){
 
 int main(){
 
+	char ch;
 	std::string currentWord;
 	int lineNum=1;
-	char ch;
-
-	std::ofstream ofs;
-    ofs.open("output.txt");
 	
+    //open output file for writing
+	std::ofstream ofs;
+    ofs.open("output.txt", std::ofstream::out);
+	
+	//open input file for reading
 	std::ifstream ifs;
 	ifs.open("sample.txt", std::ifstream::in);
+	
 	while (ifs >> std::noskipws >> ch) {
     	if (std::isalnum(ch) || ch=='-' || ch=='\''){
     		currentWord.push_back(ch);
@@ -38,7 +41,7 @@ int main(){
             	lineNum++;
             	std::cout << "line: " << lineNum << std::endl; 
             }
-    	}
+		}
 	} 
 
     ofs.close(); //close the output file
