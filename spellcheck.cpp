@@ -5,8 +5,8 @@ void Lookup(std::ofstream &ofs, std::string Word, int lineNum){
     if (Word.length()>20)
         //std::cout 
         ofs << "Long word at line " << lineNum << ", starts: " << Word.substr(0,20) << std::endl;
-	    //if (unknown word)
-            //std::cout << "Unknown word at line " << lineNum << ": " << Word << std::endl;
+	//if (unknown word)
+        //std::cout << "Unknown word at line " << lineNum << ": " << Word << std::endl;
 }
 
 
