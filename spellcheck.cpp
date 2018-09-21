@@ -5,7 +5,7 @@ void Lookup(std::ofstream &ofs, std::string Word, int lineNum){
     if (Word.length()>20)
         //std::cout 
         ofs << "Long word at line " << lineNum << ", starts: " << Word.substr(0,20) << std::endl;
-	//if (unknown word)
+    //if (unknown word)
         //std::cout << "Unknown word at line " << lineNum << ": " << Word << std::endl;
 }
 
@@ -22,15 +22,13 @@ int main(){
     ofs.open("output.txt", std::ofstream::out);
 	
     //open input file for reading
+    //assumes input file is valid text file (it ends in a newline char)
     std::ifstream ifs;
     ifs.open("sample.txt", std::ifstream::in);
 	
     while (ifs >> std::noskipws >> ch) {
-        if (std::isalnum(ch) || ch=='-' || ch=='\''){
+        if (std::isalnum(ch) || ch=='-' || ch=='\'')
             currentWord.push_back(ch);
-            if (ifs.peek(), ifs.eof())
-                std::cout << currentWord << std::endl;  //lookup function here
-        }
         else{
             if (!currentWord.empty()){
                 std::cout << currentWord << std::endl;  //lookup function here
