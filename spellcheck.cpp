@@ -1,3 +1,4 @@
+#include "hash.h"
 #include <iostream>
 #include <fstream>
 
@@ -13,6 +14,20 @@ void Lookup(std::ofstream &ofs, std::string Word, int lineNum){
 
 int main(){
 
+    //load dictionary
+    int count = 0;
+    std::string line;
+ 
+   /* std::ifstream D_File;
+    D_File.open("wordlist_small.txt", std::ifstream::in);
+    while (getline(D_File, line))
+        std::cout << line << std::endl;;
+   */
+    
+
+
+
+    //check document
     char ch;
     std::string currentWord;
     int lineNum=1;
@@ -28,7 +43,7 @@ int main(){
 	
     while (ifs >> std::noskipws >> ch) {
         if (std::isalnum(ch) || ch=='-' || ch=='\'')
-            currentWord.push_back(ch);
+            currentWord.push_back(tolower(ch));
         else{
             if (!currentWord.empty()){
                 std::cout << currentWord << std::endl;  //lookup function here
