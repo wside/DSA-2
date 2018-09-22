@@ -92,8 +92,13 @@ int hashTable::insert(const std::string &key, void *pv){
         return 0;
       
     }
-    else if(found==-2){    //hash table full, key not found
-    	if (info!=-1){ //a deleted spot is availible 
+    else if (found!=-2 && found!=-1){ 
+    	std::cout << "key already in hash table!" << std::endl; 
+    	return 1;
+    }
+    //redundancy
+    else if(found==-2){   //rare case should not happen ever //hash table full, key not found
+    	if (info!=-1){    //a deleted spot is availible 
             hashIdx = info;
             data.at(hashIdx).key = key;
             std::cout << "stored at pos: " <<  hashIdx << std::endl;
@@ -104,15 +109,12 @@ int hashTable::insert(const std::string &key, void *pv){
             std::cout << "filled: " <<  filled  << std::endl;
             return 0;
         }
-        else
+        else //a deleted spot is not availible 
     	    std::cout << "rehash and try agian" << std::endl; 
             //if everything occupied- rehash 
     	   //return 2 if rehash fails
     }
-    else{ 
-    	std::cout << "key already in hash table!" << std::endl; 
-    	return 1;
-    }
+
     	   
 }
 
@@ -191,6 +193,9 @@ int main(){
     myHashTab.insert("h");
     std::cout << "contains h?: " <<  myHashTab.contains("h")  << std::endl;
     myHashTab.insert("mytest");
+    std::cout << "contains supppercallfffrgilistic?: " <<  myHashTab.contains("supppercallfffrgilistic")  << std::endl;
+    std::cout << "contains laaaa?: " <<  myHashTab.contains("laaaa")  << std::endl;
+    std::cout << "contains randomword1?: " <<  myHashTab.contains("randomword1")  << std::endl;
 
     /*hashTable myHashTab(90);
     myHashTab.insert("d");
