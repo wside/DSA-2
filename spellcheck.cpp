@@ -14,15 +14,28 @@ void Lookup(std::ofstream &ofs, std::string Word, int lineNum){
 
 int main(){
 
+    //construct hash table object
+    hashTable myHashTab(10); //will dynamically grow if needed
+    
     //load dictionary
     int count = 0;
     std::string line;
  
-   /* std::ifstream D_File;
+    std::ifstream D_File;
     D_File.open("wordlist_small.txt", std::ifstream::in);
     while (getline(D_File, line))
-        std::cout << line << std::endl;;
-   */
+        myHashTab.insert(line);
+        //std::cout << line << std::endl;
+   
+    //testing
+    std::cout << "---------------------------------------------------- "<< std::endl;
+    D_File.clear();
+    D_File.seekg(0, std::ios::beg);
+
+    while (getline(D_File, line))
+        std::cout << "contains " << line << " ?: " << myHashTab.contains(line)  << std::endl;
+
+   
     
 
 

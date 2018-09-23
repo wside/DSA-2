@@ -34,6 +34,7 @@ class hashTable {
         bool rehash();
 
         static uint getPrime(int size);
+        static  std::vector<uint> primeList;
 };
 
 

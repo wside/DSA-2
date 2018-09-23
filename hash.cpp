@@ -3,48 +3,23 @@
 #include <algorithm>    // std::lower_bound, std::upper_bound, std::sort
 #include <vector>       // std::vector
 
+//constructor
 hashTable::hashTable(int size){
     this->filled = 0;
     this->capacity = getPrime(size);
     std::cout << "capacity" << capacity << std::endl;
     data.resize(capacity);
-   // int test = hash("atest");
-    //std::cout << test << std::endl;
-
-    /*for (auto t : data) 
-    {
-    	t.isOccupied = false;
-    	t.isDeleted = false; 
-    	//std::cout << "occ: " << t.isOccupied << std::endl;
-    }*/
-    //for real
-    
-    for (int t=0; t<capacity; t++) 
-    {
+    std::cout << "data capacity" << data.capacity() << std::endl;
+   
+    for (int t=0; t<capacity; t++){
     	data.at(t).isOccupied = false;
     	data.at(t).isDeleted = false; 
     }
-    
-
-    /*
-    //for testing
-    for (int t=0; t<capacity; t++) 
-    {
-    	data.at(t).key = "a";
-    	data.at(t).isOccupied = true;
-    	data.at(t).isDeleted = false; 
-    	//std::cout << "occ: " << t.isOccupied << std::endl;
-    }
-    data.at(5).isDeleted = true; 
-    data.at(10).isOccupied  = false; 
-    data.at(113).isOccupied  = false; 
-    //end of testing
-    */
-   
 }
 
+std::vector<uint> hashTable::primeList{53, 97, 193, 389, 769, 1543, 3079, 6151, 12289, 24593, 49157, 98317, 196613, 393241, 786433, 1572869, 3145739};
+
 uint hashTable::getPrime(int size){
-    std::vector<uint> primeList{53, 97, 193, 389, 769, 1543, 3079, 6151, 12289, 24593, 49157, 98317, 196613, 393241, 786433, 1572869, 3145739, 786433};
     std::vector<uint>::iterator upIdx;
     upIdx = std::upper_bound (primeList.begin(), primeList.end(), (size*2)); 
     
@@ -55,14 +30,16 @@ int hashTable::hash(const std::string &key){
     uint hashVal=0;
     for (char ch : key)
         hashVal = 37 * hashVal + ch; 
-
+   
+    std::cout << "hashval: " << (hashVal%capacity) << std::endl;
     return (hashVal%capacity); 
     
-    //for testing
     /*
+    //for testing
     if (key=="mytest")
-    	return 108;
-
+    	return 2;
+    */
+    /*
     std::cout << "hashval: " << int(key[0]) << std::endl;
     return int(key[0]);
     */
@@ -70,6 +47,9 @@ int hashTable::hash(const std::string &key){
 
 
 int hashTable::insert(const std::string &key, void *pv){
+    if ( (filled/(1.00*capacity))>=0.75 ) //dynamically resize hash table if it is more than half full 
+    	rehash();
+
     std::cout << "--trying to store: " << key << std::endl;
     int hashIdx;
   
@@ -109,10 +89,13 @@ int hashTable::insert(const std::string &key, void *pv){
             std::cout << "filled: " <<  filled  << std::endl;
             return 0;
         }
-        else //a deleted spot is not availible 
+        else{ //a deleted spot is not availible 
     	    std::cout << "rehash and try agian" << std::endl; 
+            rehash();
+            insert(key);
             //if everything occupied- rehash 
     	   //return 2 if rehash fails
+    	}
     }
 
     	   
@@ -128,7 +111,7 @@ bool hashTable::contains(const std::string &key){
 
 
 std::pair<int, int> hashTable::findPos(const std::string &key){
-    int IdxOrig = hash(key); //save start val
+    int IdxOrig = hash(key); //save start val 
     int Idx = IdxOrig;
     int availIdx = -1;
 
@@ -138,13 +121,12 @@ std::pair<int, int> hashTable::findPos(const std::string &key){
     }
   
     while (data.at(Idx).isOccupied == true){
-    	//std::cout << "probing for an open spot" << std::endl;
         if ((data.at(Idx).key==key) && (data.at(Idx).isDeleted==false)){
             std::cout << "contains at pos: " <<  Idx << std::endl;
             return std::make_pair(Idx, -1); //return Idx;
         }
         if (data.at(Idx).isDeleted==true)  //if is deleted=true then send potential index back
-        	availIdx = Idx;
+        	availIdx = Idx; 
         if (Idx==(IdxOrig-1)){
            std::cout << "Not found, also hash table completely full!" << std::endl;
            return std::make_pair(-2, availIdx);
@@ -175,43 +157,54 @@ bool hashTable::remove(const std::string &key){
     }
 }
 
+bool hashTable::rehash(){
+    try{
+        int capacityOrig = capacity;
+        capacity = getPrime((capacity/2)+1); //set new capactiy
+	    data.resize(capacity);
+	    for (int t=capacityOrig; t<capacity; t++) {
+    	    data.at(t).isOccupied = false;
+    	    data.at(t).isDeleted = false; 
+        }
+	    std::cout << "new capacity: " << data.capacity() << std::endl;
+	    std::cout << "new capacity varible saved: " <<  capacity << std::endl;
+        //move all entries into new spots
+        for (int i=0; i<capacityOrig; i++){
+            if ((data.at(i).isOccupied == true)&& (data.at(i).isDeleted==false)){ //no need to move deleted entries 
+                std::cout << "---trying to rehash item: " << data.at(i).key << std::endl;
+                int iNew = hash(data.at(i).key);
 
-int main(){
-    
+                //test print
+               
+                std::cout << "at position: " << i << std::endl;
+                std::cout << "new hash key: " << iNew<< std::endl;
+               
+                if (data.at(i).key==data.at(iNew).key){} //if rehashes to same val do nothing  
+                else{
+                    while (data.at(iNew).isOccupied == true){
+                        if (data.at(iNew).isDeleted == true)
+                        	break;
+                        iNew++; 
+                        if (iNew==capacity) //if reach end wrap around to beggining 
+        	                iNew=0;         //will always find an availble spot eventually because just rehashed 
+                    }
+                    data.at(i).isOccupied = false;        //remove it from old spot
+                    data.at(iNew).key =  data.at(i).key;   //put it in new spot
+                    data.at(iNew).isOccupied = true;      //new spot is now occupied
+                    data.at(iNew).isDeleted = false;       //redundancy
+                    std::cout << "key succesfully rehashed " << std::endl;
+                    std::cout << "At pos: " << iNew << " data is: " << data.at(iNew).key << std::endl;
+                   
 
-    hashTable myHashTab(90);
-    myHashTab.insert("supppercallfffrgilistic");
-    myHashTab.insert("thisisastringsss");
-    myHashTab.insert("abd9901");
-    myHashTab.insert("weee");
-    myHashTab.insert("laaaa");
-    myHashTab.insert("myyyy");
-    myHashTab.remove("msdfdvs");
-    myHashTab.insert("dssfsdfree");
-    myHashTab.insert("!dffffff!");
-    std::cout << "contains h?: " <<  myHashTab.contains("h")  << std::endl;
-    myHashTab.insert("h");
-    std::cout << "contains h?: " <<  myHashTab.contains("h")  << std::endl;
-    myHashTab.insert("mytest");
-    std::cout << "contains supppercallfffrgilistic?: " <<  myHashTab.contains("supppercallfffrgilistic")  << std::endl;
-    std::cout << "contains laaaa?: " <<  myHashTab.contains("laaaa")  << std::endl;
-    std::cout << "contains randomword1?: " <<  myHashTab.contains("randomword1")  << std::endl;
+                }
+            }
+              
+        }   
 
-    /*hashTable myHashTab(90);
-    myHashTab.insert("d");
-    myHashTab.insert("e");
-    myHashTab.insert("f");
-    myHashTab.insert("j");
-    myHashTab.insert("l");
-    myHashTab.insert("m");
-    myHashTab.remove("m");
-    myHashTab.insert("d");
-    myHashTab.insert("!");
-    std::cout << "contains h?: " <<  myHashTab.contains("h")  << std::endl;
-    myHashTab.insert("h");
-    std::cout << "contains h?: " <<  myHashTab.contains("h")  << std::endl;
-    myHashTab.insert("mytest");
-    */
+        return true;
+    }
+    catch(std::bad_alloc&){
+        std::cout << "memoery allocation failed! " << std::endl;
+        return false;
+    }
 }
-
-//TODO: circle back to beginning and check 
