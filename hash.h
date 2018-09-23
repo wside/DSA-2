@@ -29,8 +29,12 @@ class hashTable {
 
         std::vector<hashItem> data; // The actual entries are here.
 
-        int  hash(const std::string &key);   // The hash function.
-        std::pair<int, int> findPos(const std::string &key);
+        int  hash(const std::string &key);   // The hash function. 
+        
+        //First item of pair returns position index if found, or -1 if not found. 
+        //Second item of pair returns next availbe postion, or -1 if table is full (should never happen, but implemented as safety)
+        std::pair<int, int> findPos(const std::string &key); 
+        
         bool rehash();
 
         static uint getPrime(int size);
