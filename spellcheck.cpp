@@ -2,20 +2,19 @@
 #include <iostream>
 #include <fstream>
 
-void Lookup(std::ofstream &ofs, std::string Word, int lineNum){
-    if (Word.length()>20)
-        //std::cout 
-        ofs << "Long word at line " << lineNum << ", starts: " << Word.substr(0,20) << std::endl;
-    //if (unknown word)
-        //std::cout << "Unknown word at line " << lineNum << ": " << Word << std::endl;
+bool contains_num(std::string Word){
+    for(auto &ch: Word){
+        if (std::isdigit(ch)==true)
+            return true;
+    }
+    return false;
 }
-
 
 
 int main(){
 
     //construct hash table object
-    hashTable myHashTab(10); //will dynamically grow if needed
+    hashTable myHashTab(50000); //will dynamically grow if needed
     
     //load dictionary
     int count = 0;
@@ -27,13 +26,15 @@ int main(){
         myHashTab.insert(line);
         //std::cout << line << std::endl;
    
-    //testing
-    std::cout << "---------------------------------------------------- "<< std::endl;
+    /*//testing
+    std::cout << "-------------------------------------------------------------------------------------------------------------------- "<< std::endl;
     D_File.clear();
     D_File.seekg(0, std::ios::beg);
 
     while (getline(D_File, line))
-        std::cout << "contains " << line << " ?: " << myHashTab.contains(line)  << std::endl;
+        std::cout << myHashTab.contains(line)  << std::endl;
+    */
+
 
    
     
@@ -52,7 +53,7 @@ int main(){
     //open input file for reading
     //assumes input file is valid text file (it ends in a newline char)
     std::ifstream ifs;
-    ifs.open("sample.txt", std::ifstream::in);
+    ifs.open("lyrics.txt", std::ifstream::in);
 	
     while (ifs >> std::noskipws >> ch) {
         if (std::isalnum(ch) || ch=='-' || ch=='\'')
@@ -60,8 +61,20 @@ int main(){
         else{
             if (!currentWord.empty()){
                 std::cout << currentWord << std::endl;  //lookup function here
-                Lookup(ofs, currentWord, lineNum);
-                currentWord.erase();
+                //Lookup word or check if its long
+                if (currentWord.length()>20){
+                   // std::cout << "here1" << std::endl;
+                    ofs << "Long word at line " << lineNum << ", starts: " << currentWord.substr(0,20) << std::endl;
+                }
+                else{
+                    //std::cout << "here2" << std::endl;
+                    if (contains_num(currentWord)==false){
+                       // std::cout << "here3" << std::endl;
+                        if ( myHashTab.contains(currentWord)==false)
+                            ofs << "Unknown word at line " << lineNum << ": " << currentWord << std::endl;
+                    }
+                }               
+                currentWord.erase(); //erase current word to prepare for next
             }
             if (ch =='\n'){
                 lineNum++;

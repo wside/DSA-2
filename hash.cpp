@@ -31,7 +31,7 @@ int hashTable::hash(const std::string &key){
     for (char ch : key)
         hashVal = 37 * hashVal + ch; 
    
-    std::cout << "hashval: " << (hashVal%capacity) << std::endl;
+    //std::cout << "hashval: " << (hashVal%capacity) << std::endl;
     return (hashVal%capacity); 
     
     /*
@@ -122,7 +122,7 @@ std::pair<int, int> hashTable::findPos(const std::string &key){
   
     while (data.at(Idx).isOccupied == true){
         if ((data.at(Idx).key==key) && (data.at(Idx).isDeleted==false)){
-            std::cout << "contains at pos: " <<  Idx << std::endl;
+            //std::cout << "contains at pos: " <<  Idx << std::endl;
             return std::make_pair(Idx, -1); //return Idx;
         }
         if (data.at(Idx).isDeleted==true)  //if is deleted=true then send potential index back
@@ -159,46 +159,29 @@ bool hashTable::remove(const std::string &key){
 
 bool hashTable::rehash(){
     try{
+    	//save entries of old in a temporary hashtable
+    	std::vector<hashItem> dataTemp;
+        dataTemp.reserve(capacity);
+        dataTemp = data;
+
         int capacityOrig = capacity;
         capacity = getPrime((capacity/2)+1); //set new capactiy
 	    data.resize(capacity);
-	    for (int t=capacityOrig; t<capacity; t++) {
+	    
+	    dataTemp.resize(capacity);
+	    for (int t=0; t<capacity; t++){  //clear original table
     	    data.at(t).isOccupied = false;
-    	    data.at(t).isDeleted = false; 
+     	    data.at(t).isDeleted = false; 
         }
-	    std::cout << "new capacity: " << data.capacity() << std::endl;
+	    std::cout << "new capacity: " << dataTemp.capacity() << std::endl;
 	    std::cout << "new capacity varible saved: " <<  capacity << std::endl;
         //move all entries into new spots
+        filled=0;
         for (int i=0; i<capacityOrig; i++){
-            if ((data.at(i).isOccupied == true)&& (data.at(i).isDeleted==false)){ //no need to move deleted entries 
-                std::cout << "---trying to rehash item: " << data.at(i).key << std::endl;
-                int iNew = hash(data.at(i).key);
-
-                //test print
-               
-                std::cout << "at position: " << i << std::endl;
-                std::cout << "new hash key: " << iNew<< std::endl;
-               
-                if (data.at(i).key==data.at(iNew).key){} //if rehashes to same val do nothing  
-                else{
-                    while (data.at(iNew).isOccupied == true){
-                        if (data.at(iNew).isDeleted == true)
-                        	break;
-                        iNew++; 
-                        if (iNew==capacity) //if reach end wrap around to beggining 
-        	                iNew=0;         //will always find an availble spot eventually because just rehashed 
-                    }
-                    data.at(i).isOccupied = false;        //remove it from old spot
-                    data.at(iNew).key =  data.at(i).key;   //put it in new spot
-                    data.at(iNew).isOccupied = true;      //new spot is now occupied
-                    data.at(iNew).isDeleted = false;       //redundancy
-                    std::cout << "key succesfully rehashed " << std::endl;
-                    std::cout << "At pos: " << iNew << " data is: " << data.at(iNew).key << std::endl;
-                   
-
-                }
-            }
-              
+            if ((dataTemp.at(i).isOccupied == true)&& (dataTemp.at(i).isDeleted==false)){ //no need to move deleted entries 
+                std::cout << "---trying to rehash item: " << dataTemp.at(i).key << std::endl;
+                insert(dataTemp.at(i).key);
+            }            
         }   
 
         return true;
