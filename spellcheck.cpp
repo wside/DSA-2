@@ -8,6 +8,7 @@
 #include <fstream>
 #include <ctime>
 
+
 bool contains_num(std::string Word){ //function to check if a word has a number 
     for(auto &ch: Word){
         if (std::isdigit(ch)==true)
@@ -15,6 +16,7 @@ bool contains_num(std::string Word){ //function to check if a word has a number
     }
     return false;
 }
+
 
 int main(){
     
@@ -34,8 +36,13 @@ int main(){
     D_File.open(Dictionary_name, std::ifstream::in);
     
     clock_t begin1 = clock();
-    while (getline(D_File, line))
-        myHashTab.insert(line);
+    while (getline(D_File, line)){
+        if (line.length()<=20){     //ignores words that are too long
+            for(auto &ch: line)
+                ch = tolower(ch);   //convert to lowercase if needed
+            myHashTab.insert(line);
+        }
+    }
     clock_t end1 = clock();
     double elapsed_secs_load = double(end1 - begin1) / CLOCKS_PER_SEC;
     std::cout << "Total time (in seconds) to load dictionary: " << elapsed_secs_load << std::endl;
@@ -44,7 +51,6 @@ int main(){
     char ch;
     std::string currentWord;
     int lineNum=1;
-	
     //from command line
     std::cout << "Enter name of input file:  ";
     std::cin >> inFile_name;
@@ -88,4 +94,5 @@ int main(){
 
     ofs.close(); //close the output file
     return 0;
-}
+
+} //end of main
