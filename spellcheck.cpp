@@ -70,7 +70,6 @@ int main(){
             currentWord.push_back(tolower(ch));
         else{
             if (!currentWord.empty()){
-                //std::cout << currentWord << std::endl;  //lookup function here
                 //Lookup word or check if its long
                 if (currentWord.length()>20)
                     ofs << "Long word at line " << lineNum << ", starts: " << currentWord.substr(0,20) << std::endl;
@@ -82,10 +81,8 @@ int main(){
                 }               
                 currentWord.erase(); //erase current word to prepare for next
             }
-            if (ch =='\n'){
+            if (ch =='\n')
                 lineNum++;
-                //std::cout << "line: " << lineNum << std::endl; 
-            }
         }
     } 
     clock_t end2 = clock();
