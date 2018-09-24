@@ -7,9 +7,7 @@
 hashTable::hashTable(int size){
     this->filled = 0;
     this->capacity = getPrime(size);
-    ////std::cout << "capacity" << capacity << std::endl;
     data.resize(capacity);
-    ////std::cout << "data capacity" << data.capacity() << std::endl;
    
     for (int t=0; t<capacity; t++){
     	data.at(t).isOccupied = false;
@@ -17,6 +15,8 @@ hashTable::hashTable(int size){
     }
 }
 
+
+//getPrime stuff
 std::vector<uint> hashTable::primeList{53, 97, 193, 389, 769, 1543, 3079, 6151, 12289, 24593, 49157, 98317, 196613, 393241, 786433, 1572869, 3145739};
 
 uint hashTable::getPrime(int size){
@@ -26,47 +26,31 @@ uint hashTable::getPrime(int size){
     return *upIdx;
 }
 
+
+//actual hash function
 int hashTable::hash(const std::string &key){
     uint hashVal=0;
     for (char ch : key)
         hashVal = 37 * hashVal + ch; 
-    
-    if (key=="mytest")
-        return 2;
-
-    //std::cout << "hashval: " << (hashVal%capacity) << std::endl;
+   
     return (hashVal%capacity); 
-    
-    /*
-    //for testing
-    
-    */
-    /*
-    ////std::cout << "hashval: " << int(key[0]) << std::endl;
-    return int(key[0]);
-    */
 }
 
 
+//insert function
 int hashTable::insert(const std::string &key, void *pv){
-    if ( (filled/(1.00*capacity))>=0.50 ) //dynamically resize hash table if it is more than half full 
-    	rehash();
+    if ( (filled/(1.00*capacity))>=0.50 ){ //dynamically resize hash table if it is more than half full 
+    	if (rehash()==false)
+            return 2; //return 2 if rehash fails
+    }
 
-    //std::cout << "--trying to store: " << key << std::endl;
     int hashIdx;
-  
     int found;
     int info;
-
     std::tie(found,info) = findPos(key);
-    ////std::cout << "found: " <<found<< std::endl;
-    ////std::cout << "info: " << info<< std::endl;
-    if (found==-1){                         //key not in hash table, availbe spot open
+    if (found==-1){                         //key not in hash table, availbe (or deleted) spot open
         hashIdx = info;
         data.at(hashIdx).key = key;
-        ////std::cout << "stored at pos: " <<  hashIdx << std::endl;
-       	//stuff
-   	   
    	    data.at(hashIdx).isOccupied = true; 
         if (data.at(hashIdx).isDeleted == true)
             data.at(hashIdx).isDeleted = false;  //if replacing a deleted entry don't increase filled
