@@ -43,11 +43,15 @@ int hashTable::insert(const std::string &key, void *pv){
     	if (rehash()==false)
             return 2; //return 2 if rehash fails
     }
+    
     //inserting the item
     int hashIdx;
     int found;
     int info;
-    std::tie(found,info) = findPos(key);
+    std::pair<int, int> findPosPair =  findPos(key);
+    found = findPosPair.first;
+    info  = findPosPair.second;
+    
     if (found==-1){                         //key not in hash table, availbe (or deleted) spot open
         hashIdx = info;
         data.at(hashIdx).key = key;        //insert in new key
@@ -124,9 +128,9 @@ bool hashTable::rehash(){
         capacity = getPrime((capacity/2)+1); //set new capactiy
 	    data.resize(capacity);               //new table has new capacity
 	    
-	    for (int t=0; t<capacity; t++){      //clear new table
-    	    data.at(t).isOccupied = false;
-     	    data.at(t).isDeleted = false; 
+        for (int t=0; t<capacity; t++){      //clear new table
+            data.at(t).isOccupied = false;
+            data.at(t).isDeleted = false; 
         }
 	  
         //move all entries into new spots
