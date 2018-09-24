@@ -1,5 +1,5 @@
 //Wendy Ide
-//Programming Assignment #1 - Dictionary
+//Programming Assignment #1 -Dictionary
 //DSA II Prof. Sable
 //09/23/2018
 
@@ -18,21 +18,21 @@ bool contains_num(std::string Word){ //function to check if a word has a number
 
 int main(){
     
-    //get filenames from user command line
+    //define filenames that will come from user command line
     std::string Dictionary_name;
     std::string inFile_name;
     std::string outFile_name;
     
     //construct hash table object
-    hashTable myHashTab(50000); //will dynamically grow if needed
+    hashTable myHashTab(50000); //Expect 50,000 items average //will grow dynamically if needed
     
     //load dictionary
     std::cout << "Enter name of dictionary:  ";
     std::cin >> Dictionary_name;
-
     std::string line;
     std::ifstream D_File;
     D_File.open(Dictionary_name, std::ifstream::in);
+    
     clock_t begin1 = clock();
     while (getline(D_File, line))
         myHashTab.insert(line);
@@ -50,11 +50,9 @@ int main(){
     std::cin >> inFile_name;
     std::cout << "Enter name of output file:  ";
     std::cin >> outFile_name;
-
     //open output file for writing
     std::ofstream ofs;
     ofs.open(outFile_name, std::ofstream::out);
-	
     //open input file for reading
     //assumes input file is valid text file (it ends in a newline char)
     std::ifstream ifs;
@@ -87,7 +85,6 @@ int main(){
     clock_t end2 = clock();
     double elapsed_secs_check = double(end2 - begin2) / CLOCKS_PER_SEC;
     std::cout << "Total time (in seconds) to check document: " << elapsed_secs_check << std::endl;
-
 
     ofs.close(); //close the output file
     return 0;

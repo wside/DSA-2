@@ -8,14 +8,28 @@ typedef unsigned int uint;
 class hashTable {
 
     public:
-        hashTable(int size=0);  
+        //The constructor insilizates the hash table
+        //Uses getPrime to choose a prime number at least twice as large as
+        //The specified size for the initial size of the hash table.
+        hashTable(int size=0);   
+        
+        //Insert the specified key into the hash table.
+        //Returns 0 on success, 1 if key already exists in hash table, 2 if rehash fails.
         int  insert(const std::string &key, void *pv = NULL);
+        
+        //If specified key is in hash table, return true; otherwise, return false.
         bool contains(const std::string &key);
-        void *getPointer(const std::string &key, bool *b = NULL);
-        int  setPointer(const std::string &key, void *pv);
+        
+        //Delete the item with the specified key.
+        //Returns true on success, false if the specified key is not in the hash table.
         bool remove(const std::string &key);
 
+        //To be implemented later 
+        void *getPointer(const std::string &key, bool *b = NULL);
+        int  setPointer(const std::string &key, void *pv);
+        
     private:
+        //the "structure" of each hash table entry
         class hashItem {
             public:
                 std::string key;
@@ -24,21 +38,26 @@ class hashTable {
                 void *pv;
         };
 
-        int capacity; // The current capacity of the hash table.
-        int filled;   // Number of occupied items in the table.
+        int capacity;  //The current capacity of the hash table.
+        int filled;    //Number of occupied items in the table.
 
-        std::vector<hashItem> data; // The actual entries are here.
+        std::vector<hashItem> data; //The actual entries are here.
 
-        int  hash(const std::string &key);   // The hash function. 
+        int  hash(const std::string &key);   //The hash function. 
         
-        //First item of pair returns position index if found, or -1 if not found. 
-        //Second item of pair returns next availbe postion, or -1 if table is full (should never happen, but implemented as safety)
+        //Search for an item with the specified key.
+        //First of pair returns item's index if found, or -1 if not found, 
+        //or -2 if table is full (should never happen, but implemented as a safety)
+        //Second of pair returns next availbe postion, or -1(no-op) if item's index was found
         std::pair<int, int> findPos(const std::string &key); 
         
+        //The rehash function; makes the hash table bigger.
+        //Returns true on success, false if memory allocation fails.
         bool rehash();
+         
+        static uint getPrime(int size);      //Return a prime number at least twice as large as size. 
+        static  std::vector<uint> primeList; //precomputed list found from internet
 
-        static uint getPrime(int size);
-        static  std::vector<uint> primeList;
 };
 
 
