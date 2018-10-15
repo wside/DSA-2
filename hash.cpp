@@ -52,14 +52,11 @@ int hashTable::insert(const std::string &key, void *pv){
     found = findPosPair.first;
     info  = findPosPair.second;
     
-    if (found==-1){                         //key not in hash table, availbe (or deleted) spot open
+    if (found==-1){                         //key not in hash table, availbe spot open
         hashIdx = info;
-        data.at(hashIdx).key = key;        //insert in new key
+        data.at(hashIdx).key = key;         //insert in new key
    	    data.at(hashIdx).isOccupied = true; 
-        if (data.at(hashIdx).isDeleted == true)
-            data.at(hashIdx).isDeleted = false;  //if replacing a deleted entry don't increase filled
-        else
-            filled++;  //increment filled counter by 1
+        filled++;  //increment filled counter by 1
         return 0;
     }
     else if (found!=-2 && found!=-1)  //key already in hash table
@@ -95,26 +92,21 @@ bool hashTable::contains(const std::string &key){
 std::pair<int, int> hashTable::findPos(const std::string &key){
     int IdxOrig = hash(key); //save start val 
     int Idx = IdxOrig;
-    int availIdx = -1;
 
-    if (data.at(IdxOrig).isOccupied == false) //availble spot open
-        return std::make_pair(-1, IdxOrig); //return -1;
+    if (data.at(IdxOrig).isOccupied == false) //availble spot open at expected spot //most likely case 
+        return std::make_pair(-1, IdxOrig);   //return -1;
 
     while (data.at(Idx).isOccupied == true){
         if ((data.at(Idx).key==key) && (data.at(Idx).isDeleted==false)) //check if key already there
             return std::make_pair(Idx, -1); //returns position index if found
-        if (data.at(Idx).isDeleted==true)   //if is deleted==true, then set equal to avaiable index 
-        	availIdx = Idx; 
-        if (Idx==(IdxOrig-1))             //redundancy, should never happen  //stops while loop if wraps all the way around  
-           return std::make_pair(-2, -1); //hash table completely full! // //ignores if a deleted spot is availible because should rehash anyway
-        Idx++; 
-        if (Idx==capacity) //if reach end wrap around to beggining //recall vectors are zero indexed 
+        if (Idx==(IdxOrig-1))               //redundancy, should never happen  //stops while loop if wraps all the way around  
+           return std::make_pair(-2, -1);   //hash table completely full! // //ignores if a deleted spot is availible because should rehash anyway
+        Idx++;                              //continue searching
+        if (Idx==capacity)                  //if reach end wrap around to beggining //recall vectors are zero indexed 
         	Idx=0;  
     }
-    
-    if (availIdx==-1) //if deleted spot was not found first, send back first available spot
-    	availIdx = Idx;
-    return  std::make_pair(-1, availIdx); 
+     
+    return  std::make_pair(-1, Idx); //availble spot open //send back first available spot
 }
 
 

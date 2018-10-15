@@ -18,8 +18,7 @@ bool contains_num(std::string Word){ //function to check if a word has a number
 }
 
 
-int main(){
-    
+int main(){  
     //define filenames that will come from user command line
     std::string Dictionary_name;
     std::string inFile_name;
