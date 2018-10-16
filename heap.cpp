@@ -88,9 +88,9 @@ int heap::remove(const std::string &id, int *pKey, void *ppData){
         	*pKey = data[delPos].key; 
         if (ppData!=NULL)
         	*(static_cast<void **> (ppData)) = data[delPos].pData;
-	    //"delete delPos" by switching delPos with farthest right node 
-	    //then delete the farthest right node
-	    mapping->setPointer(data[filled].id, &data[delPos]);
+        //"delete delPos" by switching delPos with farthest right node 
+        //then delete the farthest right node
+        mapping->setPointer(data[filled].id, &data[delPos]);
         mapping->remove(data[delPos].id);
         std::swap(data.at(filled),data.at(delPos)); 
         data.at(filled).id = "";
@@ -98,7 +98,7 @@ int heap::remove(const std::string &id, int *pKey, void *ppData){
         data.at(filled).pData = NULL;
         filled--;
         //if replacement node < parent node, filter replacement node up the tree
-         if (data.at(delPos).key < data.at(delPos/2).key) 
+        if (data.at(delPos).key < data.at(delPos/2).key) 
      	    percolateUp(delPos);          
         else 
      	    percolateDown(delPos); //else percolate down //will break from function immediately if current node is less than both children
@@ -126,8 +126,8 @@ void heap::percolateDown(int posCur){
 		return;
 	if ((2*posCur)==filled){ //layer before bottom//no right_child
         if (data.at(posCur*2).key < data.at(posCur).key){ 
-	    	mapping->setPointer(data[posCur].id, &data[posCur*2]);   //swap the hash table pointers 
-    	    mapping->setPointer(data[posCur*2].id, &data[posCur]);   //swap the hash table pointers 
+            mapping->setPointer(data[posCur].id, &data[posCur*2]);   //swap the hash table pointers 
+            mapping->setPointer(data[posCur*2].id, &data[posCur]);   //swap the hash table pointers 
             std::swap(data.at(posCur),data.at(posCur*2));            //swap parent and left_child
             return;
 	    }
@@ -144,7 +144,7 @@ void heap::percolateDown(int posCur){
     	//if obtained node is smaller than parent node, switch with parent node  
 		if (data.at(j).key < data.at(posCur).key){
             mapping->setPointer(data[posCur].id, &data[j]); //swap the hash table pointers 
-    	    mapping->setPointer(data[j].id, &data[posCur]); //swap the hash table pointers 
+            mapping->setPointer(data[j].id, &data[posCur]); //swap the hash table pointers 
             std::swap(data.at(posCur),data.at(j));          //swap parent and right_child
             posCur = j;                                     //posCur = right_child 
             percolateDown(j);                               //recursive call
