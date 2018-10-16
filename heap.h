@@ -39,7 +39,6 @@ class heap{
         int capacity; //total capacity of the heap, initialized in constructor
         int filled; //Number of occupied items in the heap 
 
-
         //The declarations of my data vector and hash table pointer:
         std::vector<node> data;   //The actual binary heap
         hashTable *mapping;       //maps ids to node pointers
@@ -50,11 +49,6 @@ class heap{
         int getPos(node *pn);      
 
 };
-
-
-
-
-
 
 
 #endif //_HEAP_H
