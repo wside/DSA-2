@@ -1,14 +1,17 @@
-spell.out: spellcheck.o hash.o
-	g++ -o spell.out spellcheck.o hash.o
+useHeap.out: useHeap.o heap.o hash.o
+	g++ -o useHeap.out useHeap.o heap.o hash.o
 
-spellcheck.o: spellcheck.cpp hash.h
-	g++ -std=c++11 -c spellcheck.cpp
+useHeap.o: useHeap.cpp
+	g++ -std=c++11 -c useHeap.cpp
+
+heap.o: heap.cpp heap.h
+	g++ -std=c++11 -c heap.cpp
 
 hash.o: hash.cpp hash.h
 	g++ -std=c++11 -c hash.cpp
 
 debug:
-	g++ -std=c++11 -g -o spellDebug.out spellcheck.cpp hash.cpp
+	g++ -std=c++11 -g -o useHeapDebug.out useHeap.cpp heap.cpp hash.cpp
 
 clean:
 	rm -f *.out *.o *.stackdump *~
@@ -17,3 +20,4 @@ backup:
 	test -d backups || mkdir backups
 	cp *.cpp backups
 	cp *.h backups
+	cp Makefile backups

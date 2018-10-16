@@ -24,8 +24,14 @@ class hashTable {
         //Returns true on success, false if the specified key is not in the hash table.
         bool remove(const std::string &key);
 
-        //To be implemented later 
+        //Gets the void pointer with the specified key
+        //If key does not exist in hash table return NULL
+        //If optional pointer to a bool is provided,
+        //set bool to true if key is in hash table
+        //set bool to false otherwise
         void *getPointer(const std::string &key, bool *b = NULL);
+        //Sets the void pointer with the specified key
+        //Returns 0 on success, 1 if specified key does not exist
         int  setPointer(const std::string &key, void *pv);
         
     private:

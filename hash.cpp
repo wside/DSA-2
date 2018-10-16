@@ -36,7 +36,7 @@ int hashTable::hash(const std::string &key){
 }
 
 
-//public functions
+//public functions:
 int hashTable::insert(const std::string &key, void *pv){
     //dynamically resize hash table if it is more than 75% full 
     if ( (filled/(1.00*capacity))>=0.75 ){ 
@@ -55,7 +55,8 @@ int hashTable::insert(const std::string &key, void *pv){
     if (found==-1){                         //key not in hash table, availbe spot open
         hashIdx = info;
         data.at(hashIdx).key = key;         //insert in new key
-   	    data.at(hashIdx).isOccupied = true; 
+   	    data.at(hashIdx).pv = pv;
+        data.at(hashIdx).isOccupied = true; 
         filled++;  //increment filled counter by 1
         return 0;
     }
@@ -88,7 +89,7 @@ bool hashTable::contains(const std::string &key){
 }
 
 
-//privte functions
+//privte functions:
 std::pair<int, int> hashTable::findPos(const std::string &key){
     int IdxOrig = hash(key); //save start val 
     int Idx = IdxOrig;
@@ -138,4 +139,31 @@ bool hashTable::rehash(){
         return false;  //memory allocation failed!
     }
 
+}
+
+
+//pointer stuff (public):
+void *hashTable::getPointer(const std::string &key, bool *b){
+    if (contains(key)==false){
+        if (b!=NULL)
+            *b = false;
+        return NULL;
+    }
+    else{
+        if (b!=NULL)
+            *b = true;
+        int gIdx = (findPos(key)).first;
+        return data.at(gIdx).pv;
+    }
+}
+
+
+int  hashTable::setPointer(const std::string &key, void *pv){
+    if (contains(key)==false)
+        return 1;   //could not remove, not in table
+    else{
+        int sIdx = (findPos(key)).first;
+        data.at(sIdx).pv = pv;
+        return 0;
+    }
 }
