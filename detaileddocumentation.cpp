@@ -24,6 +24,23 @@
   data.resize(capacity+1);
   mapping = new hashTable(capacity*2);
 
+  A simple getPos implementation:
+
+  int pos = pn - &data[0];
+  return pos;
+
+//An example of a call to the hash table's setPointer member function:
+
+  mapping->setPointer(data[posCur].id, &data[posCur]);
+
+//An example of a call to the hash table's getPointer member function:
+
+  node *pn = static_cast<node *> (mapping->getPointer(id, &b));
+
+Filling in ppData in deleteMin:
+
+  *(static_cast<void **> (ppData)) = data[1].pData;
+
 
 
 //#################################################################
