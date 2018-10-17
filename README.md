@@ -1,7 +1,7 @@
 # DSA-2
 Program1- Hash Table
     
-Uses:  
+Features:  
 -linear probing  
--dynamically resizes  
+-dynamic resizing 
 -lazy deletion  
