@@ -1,5 +1,5 @@
 # DSA-2
-Program1- Hash Table
+**Program1- Hash Table**
     
 Features:  
 -simple hash function  
