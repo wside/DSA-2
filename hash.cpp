@@ -130,7 +130,7 @@ bool hashTable::rehash(){
         filled=0;
         for (int i=0; i<capacityOrig; i++){
             if ((dataTemp.at(i).isOccupied == true)&& (dataTemp.at(i).isDeleted==false)){ //no need to move deleted entries 
-                insert(dataTemp.at(i).key);  //insert old value into new table with new hash val
+                insert(dataTemp.at(i).key , dataTemp.at(i).pv);  //insert old value into new table with new hash val
             }            
         }   
         return true;
