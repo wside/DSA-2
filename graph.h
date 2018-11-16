@@ -4,9 +4,7 @@
 #include "hash.h"  
 #include "heap.h"  
 #include <limits>
-#include <iostream>
 #include <fstream>
-#include <sstream>
 #include <list>
 
 
@@ -16,7 +14,6 @@ class Graph{
 
     public:
        	Graph();
-       // Graph(int capactiy);
         void load(std::ifstream& inputFile);
         bool startCheck(std::string startingNode);
         void dijkstra(std::string Node_x_name);

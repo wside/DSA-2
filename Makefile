@@ -1,8 +1,11 @@
-useHeap.out: useHeap.o heap.o hash.o
-	g++ -o useHeap.out useHeap.o heap.o hash.o
+useGraph.out: useGraph.o graph.o heap.o hash.o
+	g++ -o useGraph.out useGraph.o graph.o heap.o hash.o
 
-useHeap.o: useHeap.cpp
-	g++ -std=c++11 -c useHeap.cpp
+useGraph.o: useGraph.cpp
+	g++ -std=c++11 -c useGraph.cpp
+
+graph.o: graph.cpp graph.h
+	g++ -std=c++11 -c graph.cpp
 
 heap.o: heap.cpp heap.h
 	g++ -std=c++11 -c heap.cpp
@@ -11,7 +14,7 @@ hash.o: hash.cpp hash.h
 	g++ -std=c++11 -c hash.cpp
 
 debug:
-	g++ -std=c++11 -g -o useHeapDebug.out useHeap.cpp heap.cpp hash.cpp
+	g++ -std=c++11 -g -o useGraphDebug.out useGraph.cpp graph.cpp heap.cpp hash.cpp
 
 clean:
 	rm -f *.out *.o *.stackdump *~

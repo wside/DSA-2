@@ -38,10 +38,10 @@ int heap::setKey(const std::string &id, int key){
 	    int setPos = getPos(pn);
 	    data.at(setPos).key = key;
 	    //if replacement node < parent node, filter replacement node up the tree
-	    if (data.at(setPos).key < data.at(setPos/2).key) 
+        if (data.at(setPos).key < data.at(setPos/2).key) 
      	    percolateUp(setPos);          
         else 
-     	    percolateDown(setPos); //else percolate down //will break from function immediately if current is less than both children
+            percolateDown(setPos); //else percolate down //will break from function immediately if current is less than both children
      	return 0;        
     }
 }

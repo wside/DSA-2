@@ -7,56 +7,55 @@
 
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <ctime>
 
 std::string graphFile_name;
+std::ifstream G_File;
 std::string startVertex_name;
 std::string outFile_name; 
-/*
-void prompt(){
-    std::cout << "Enter a valid vertex id for the starting vertex: ";
-    std::cin >> startVertex_name;
+
+
+void getUserInput(std::string message, std::string &ref){
+    std::cout << message;
+    std::cin >> ref;
 }
-*/
+
+
+void loadGraph(){
+    getUserInput("Enter name of graph file: ", graphFile_name);
+    G_File.open(graphFile_name, std::ifstream::in); 
+    while (!G_File){
+        G_File.clear();
+        std::cout << "File cannot be opened, please try agian with valid file name." << std::endl;
+        loadGraph();
+    }
+}
 
 
 int main(){
 
+    loadGraph(); //load input file into main
 
-    //load input Graph file
-    std::cout << "Enter name of graph file: ";
-    std::cin >> graphFile_name;
-   
-    //std::string filename = "graph.txt";
-    std::ifstream G_File;
-    G_File.open(graphFile_name, std::ifstream::in); 
-    if (!G_File){
-          std::cout << "File cannot be opened, please try agian with valid file name." << std::endl;
-          //reprompt user for file name
-    }
-        
-    Graph myGraph;
-    myGraph.load(G_File);
-    std::cout << "Enter a valid vertex id for the starting vertex: ";
-    std::cin >> startVertex_name;
-    while (!myGraph.startCheck(startVertex_name)){ //won't enter if input valid vertex the first time
-          std::cout << "Enter a valid vertex id for the starting vertex: ";
-          std::cin >> startVertex_name;
-    }
+    Graph myGraph; //declare Graph class object
+    
+    myGraph.load(G_File); //load input file into Graph 
+    
+    //set starting vertex
+    getUserInput("Enter a valid vertex id for the starting vertex: ", startVertex_name);
+    while (!myGraph.startCheck(startVertex_name))
+        getUserInput("Enter a valid vertex id for the starting vertex: ", startVertex_name);
+
 
     clock_t begin = clock();
-    myGraph.dijkstra(startVertex_name);
+    myGraph.dijkstra(startVertex_name); //the actual dijkstra algorithm function
     clock_t end = clock();
     double elapsed_secs_load = double(end - begin) / CLOCKS_PER_SEC;
     std::cout << "Total time (in seconds) to apply Dijkstra's algorithm: " << elapsed_secs_load << std::endl;
 
-    //load output file
-    std::cout << "Enter name of output file: ";
-    std::cin >> outFile_name;
+    getUserInput("Enter name of output file: ", outFile_name);  //load output file into main
 
-    myGraph.output(outFile_name);
+    myGraph.output(outFile_name); //write dijkstra solution to text file
 
-   return 0;
+    return 0;
 
 } //end of main    
