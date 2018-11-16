@@ -19,7 +19,7 @@ class Graph{
        // Graph(int capactiy);
         void load(std::ifstream& inputFile);
         void dijkstra(std::string Node_x_name);
-      //  void output();  
+        void output();  
 
     private:
         class Node; //edge needs t recognize node

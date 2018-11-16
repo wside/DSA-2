@@ -98,6 +98,7 @@ void Graph::dijkstra(std::string Node_x_name){
         Node *v;
 		delMinCheck = gHeap.deleteMin(&stringTmp, &key, &v); //v is ppData
         std::cout << "delMinCheck: " << delMinCheck << std::endl;
+        // std::cout << "v: " << v<<  std::endl;
         (v->known) = true;
    
         //debug
@@ -135,7 +136,9 @@ void Graph::dijkstra(std::string Node_x_name){
                 	g->dist = v->dist + cvw;
                 	std::cout << "g->dist: " << g->dist <<  std::endl;
                 	gHeap.setKey(w.nextNode->name, g->dist);
-                	g->path  = v;
+                	g->path  = new Node;
+                	g->path = v;
+                	 //std::cout << "g->path: " << g->path <<  std::endl;
                 }
             }      
         }
@@ -152,3 +155,46 @@ void Graph::dijkstra(std::string Node_x_name){
 }
 
 
+void Graph::output(){
+    std::string startNode = "v1";
+	std::string outFile_name = "out.txt";
+	std::ofstream ofs;
+    ofs.open(outFile_name, std::ofstream::out);
+    
+     for (auto const& i : Node_List) {
+     	 //bool b;
+     	// Node *prev = static_cast<Node*> (Node_HT.getPointer((i.path), &b));
+     	 //Node *(i.path);
+         std::string printPath;
+         ofs <<   i.name << ": " << i.dist << " [" ;    	 
+
+
+     	 Node *path = i.path;
+     	 while(path !=NULL){
+     	   
+     	    // if (i.path->name=="v1"){
+     	     //	ofs << "done" << std::endl;
+     	     //   }
+     	    // else{
+     	 	      printPath = (path->name) + ", " + printPath;
+     	     	  //ofs << (path->name) << std::endl;
+                if ( path->name==startNode){
+                	break;
+                }     	   
+     	     	path = path->path;
+     	    // }
+     	     	  //sofs << (i.path->path->name) << std::endl;
+
+     	 }
+         
+     	ofs << printPath << i.name << "]"  << std::endl; 
+       // if (i.path->name != i.name){
+         //  if(i.path->path !=NULL)
+     	 //  ofs << (i.path->path) << std::endl;
+        // }
+        
+     
+    }
+
+     ofs.close(); //close the output file
+}
