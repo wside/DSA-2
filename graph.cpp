@@ -62,6 +62,15 @@ void Graph::load(std::ifstream& inputFile){
 }
 
 
+bool Graph::startCheck(std::string startingNode){
+    if (Node_HT.contains(startingNode)){
+    	startNode = startingNode; //so whole class can have access
+    	return true;
+    }
+    else
+    	return false;
+}
+
 
 void Graph::dijkstra(std::string Node_x_name){
  std::cout << "here: " << std::endl;
@@ -158,9 +167,9 @@ void Graph::dijkstra(std::string Node_x_name){
 }
 
 
-void Graph::output(){
-    std::string startNode = "v5";
-	std::string outFile_name = "out.txt";
+void Graph::output(std::string outFile_name){
+    //std::string startNode = "v5";
+	
 	std::ofstream ofs;
     ofs.open(outFile_name, std::ofstream::out);
     
@@ -175,18 +184,12 @@ void Graph::output(){
      	 Node *path = i.path;
      	 while(path !=NULL){
      	   
-     	    // if (i.path->name=="v1"){
-     	     //	ofs << "done" << std::endl;
-     	     //   }
-     	    // else{
-     	 	      printPath = (path->name) + ", " + printPath;
-     	     	  //ofs << (path->name) << std::endl;
-                if ( path->name==startNode){
+     	    
+     	 	    printPath = (path->name) + ", " + printPath;  
+                if ( path->name==startNode)
                 	break;
-                }     	   
      	     	path = path->path;
-     	    // }
-     	     	  //sofs << (i.path->path->name) << std::endl;
+     	   
 
      	 }
          

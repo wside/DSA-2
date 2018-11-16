@@ -18,11 +18,12 @@ class Graph{
        	Graph();
        // Graph(int capactiy);
         void load(std::ifstream& inputFile);
+        bool startCheck(std::string startingNode);
         void dijkstra(std::string Node_x_name);
-        void output();  
+        void output(std::string outFile_name);  
 
     private:
-        class Node; //edge needs t recognize node
+        class Node; //Edge class needs to recognize Node class
         class Edge{
         	public:
         	    Node *nextNode;
@@ -34,17 +35,18 @@ class Graph{
                 bool known;
                 int dist; 
                 std::list<Edge> adjlist; //adjacency list
-                Node *path; //Probably vertex*, as mentioned above 
-            //other datat member functions as needed
+                Node *path; 
         };
 
         std::list<Node> Node_List;
+    
+        //heap local to dijstras function so not declared in header 
         hashTable Node_HT;
+
         int totalNodeCount;
-        //heap gHeap; 
+        std::string startNode;
 
 };
 
-//heap delete min (shortest path)
 
 #endif //_GRAPH_H
