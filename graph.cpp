@@ -12,7 +12,7 @@ void Graph::load(std::ifstream& inputFile){
     std::string first_vertex; //source vertex of an edge
     std::string second_vertex; //dest vertex of an edge
 
-    int insertCheck;
+    short insertCheck;
   //  std::list<Node>::iterator it = Node_List.begin();
 
     while (inputFile >> word){
@@ -22,7 +22,7 @@ void Graph::load(std::ifstream& inputFile){
         	second_vertex=word;
         if (type!=0){
             std::cout << word << std::endl;
-            //initilizes nodes here so Dijkstra method doesn't have to
+            //initilizes nodes here so Dijkstra funct doesn't have to
             insertCheck = Node_HT.insert(word); 
             if (insertCheck == 0){
         	    Node node;
@@ -62,27 +62,49 @@ void Graph::load(std::ifstream& inputFile){
 }
 
 
-/*
-void Graph::dijkstra(Node s){
 
-    
+void Graph::dijkstra(std::string Node_x_name){
+ std::cout << "here: " << std::endl;
+    //done already
     //for each Node v{
         //v.dist = INFINITY;
       //  v.known = false;
 	//}
-	
 
-	for (auto const& i : NodeList) {
-        i.NodeList.dist = INFINITY;
-        i.NodeList.known = false;
+    //put all unknown verticies in a heap (local to dijkstra funct)
+    heap gHeap(totalNodeCount);
+    for (auto const& i : Node_List) {
+    	bool b1;
+    	Node *pv =  static_cast<Node*> (Node_HT.getPointer(i.name, &b1));  
+        gHeap.insert (i.name, i.dist, pv); //pv is ppData
     }
+    
+    bool b2;
+    Node *x = static_cast<Node*> (Node_HT.getPointer(Node_x_name, &b2));     
+    (x->dist) = 0;
+	
+    //debug
+	for(auto const& i : Node_List) 
+            std::cout << i.name <<  " " << i.dist << " " << i.known << std::endl;
+    //debug
 
-	s.dist = 0;
-
-	while(there is an unknown distance vertex){
-		Node v = smallest unknown distance vertex;
-		v. known = true;
-
+    short delMinCheck =0;
+	while(delMinCheck!=1){
+		std::cout << "here: " << std::endl;
+		//Node v = smallest unknown distance vertex;
+		//v. known = true;
+		std::string stringTmp;
+        int key;
+        Node *v;
+		delMinCheck = gHeap.deleteMin(&stringTmp, &key, &v); //v is ppData
+        std::cout << "delMinCheck: " << delMinCheck << std::endl;
+        (v->known) = true;
+   
+        //debug
+        for (auto const& i : Node_List) 
+            std::cout << i.name <<  " " << i.dist << " " << i.known << std::endl;
+        //debug
+       /*
 		for each Node w adjacent to v{
             if (!w.known){
                 int cvw = cost of edge from v to w;
@@ -93,8 +115,40 @@ void Graph::dijkstra(Node s){
                 }
 		    }
         }
-	}
+        */
+        std::cout << "v->name: " << v->name <<  std::endl;
+        for ( auto const& w : (v->adjlist) ){
+        	//std::cout << "v->name: " << v->name <<  std::endl;
+        	std::cout << "w.nextNode->name: " << w.nextNode->name <<  std::endl;
+            std::cout << "v->dist: " << v->dist <<  std::endl;
+            
+        	bool b3;
+            Node *g = static_cast<Node*> (Node_HT.getPointer((w.nextNode->name), &b3));     
+            
+            if ((g->known)==false){
+            	 std::cout << "g->known: " << g->known <<  std::endl;
+                int cvw =  w.cost; //cost of edge from v to w
+                  std::cout << "cvw: " << cvw <<  std::endl;
+                     std::cout << "g->dist: " << g->dist <<  std::endl;
+                if ( v->dist + cvw < (g->dist)){
+                	//update w
+                	g->dist = v->dist + cvw;
+                	std::cout << "g->dist: " << g->dist <<  std::endl;
+                	gHeap.setKey(w.nextNode->name, g->dist);
+                	g->path  = v;
+                }
+            }      
+        }
+	//testbench
+     for (auto const& i : Node_List) {
+        std::cout << i.name <<  " " << i.dist << " " << i.known << std::endl;
+    }
+     
 
+
+
+	}
+	
 }
-*/
+
 

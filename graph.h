@@ -18,7 +18,7 @@ class Graph{
        	Graph();
        // Graph(int capactiy);
         void load(std::ifstream& inputFile);
-       // void dijkstra(node s);
+        void dijkstra(std::string Node_x_name);
       //  void output();  
 
     private:
@@ -33,8 +33,8 @@ class Graph{
                 std::string name;
                 bool known;
                 int dist; 
-       //     Node path; //Probably vertex*, as mentioned above 
                 std::list<Edge> adjlist; //adjacency list
+                Node *path; //Probably vertex*, as mentioned above 
             //other datat member functions as needed
         };
 
