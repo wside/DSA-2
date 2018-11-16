@@ -29,7 +29,7 @@ int main(){
 
     Graph myGraph;
     myGraph.load(G_File);
-    myGraph.dijkstra("v1");
+    myGraph.dijkstra("v5");
     myGraph.output();
     /*
     while (getline(G_File, line)){   

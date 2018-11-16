@@ -71,6 +71,11 @@ void Graph::dijkstra(std::string Node_x_name){
       //  v.known = false;
 	//}
 
+    bool b2;
+    Node *x = static_cast<Node*> (Node_HT.getPointer(Node_x_name, &b2));     
+    (x->dist) = 0;
+
+
     //put all unknown verticies in a heap (local to dijkstra funct)
     heap gHeap(totalNodeCount);
     for (auto const& i : Node_List) {
@@ -79,9 +84,7 @@ void Graph::dijkstra(std::string Node_x_name){
         gHeap.insert (i.name, i.dist, pv); //pv is ppData
     }
     
-    bool b2;
-    Node *x = static_cast<Node*> (Node_HT.getPointer(Node_x_name, &b2));     
-    (x->dist) = 0;
+    
 	
     //debug
 	for(auto const& i : Node_List) 
@@ -156,7 +159,7 @@ void Graph::dijkstra(std::string Node_x_name){
 
 
 void Graph::output(){
-    std::string startNode = "v1";
+    std::string startNode = "v5";
 	std::string outFile_name = "out.txt";
 	std::ofstream ofs;
     ofs.open(outFile_name, std::ofstream::out);
@@ -166,7 +169,7 @@ void Graph::output(){
      	// Node *prev = static_cast<Node*> (Node_HT.getPointer((i.path), &b));
      	 //Node *(i.path);
          std::string printPath;
-         ofs <<   i.name << ": " << i.dist << " [" ;    	 
+            	 
 
 
      	 Node *path = i.path;
@@ -187,8 +190,13 @@ void Graph::output(){
 
      	 }
          
-     	ofs << printPath << i.name << "]"  << std::endl; 
-       // if (i.path->name != i.name){
+         if (path==NULL && i.name!=startNode){
+           ofs <<  i.name << ": " << "NO PATH" << std::endl; 
+         }
+         else
+
+     	 ofs <<   i.name << ": " << i.dist << " [" << printPath << i.name << "]"  << std::endl; 
+       // if (i.path->name != i.name){e
          //  if(i.path->path !=NULL)
      	 //  ofs << (i.path->path) << std::endl;
         // }
