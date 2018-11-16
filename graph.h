@@ -1,30 +1,47 @@
 #ifndef _GRAPH_H
 #define _GRAPH_H
 
+#include "hash.h"  
+#include "heap.h"  
+#include <limits>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <list>
+
+
+const int INFINITY= std::numeric_limits<int>::max();
+
 class Graph{
 
     public:
-        Graph();
-        void dijkstra(node s);
-        void load();
-        void output();  
+       	Graph();
+       // Graph(int capactiy);
+        void load(std::ifstream& inputFile);
+       // void dijkstra(node s);
+      //  void output();  
 
     private:
         class Node; //edge needs t recognize node
         class Edge{
-        	//next node
-        	//weight
+        //	Node nextNode;
+        	int cost;
         };
         class Node{
             public: 
-            list<Edge> adj; //adjacency list
+            std::string name;
             bool known;
-            DistType dist; //DIstType is probably int
-            Vertex path; //Probably vertext *, as mentioned above 
+            int dist; 
+       //     Node path; //Probably vertex*, as mentioned above 
+            std::list<Edge> adj; //adjacency list
             //other datat member functions as needed
         };
 
-};r
+        std::list<Node> Node_List;
+        hashTable Node_HT;
+        //heap gHeap; 
+
+};
 
 //heap delete min (shortest path)
 
