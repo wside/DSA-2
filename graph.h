@@ -24,21 +24,23 @@ class Graph{
     private:
         class Node; //edge needs t recognize node
         class Edge{
-        //	Node nextNode;
-        	int cost;
+        	public:
+        	    Node *nextNode;
+        	    int cost;
         };
         class Node{
             public: 
-            std::string name;
-            bool known;
-            int dist; 
+                std::string name;
+                bool known;
+                int dist; 
        //     Node path; //Probably vertex*, as mentioned above 
-            std::list<Edge> adj; //adjacency list
+                std::list<Edge> adjlist; //adjacency list
             //other datat member functions as needed
         };
 
         std::list<Node> Node_List;
         hashTable Node_HT;
+        int totalNodeCount;
         //heap gHeap; 
 
 };
