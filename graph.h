@@ -1,14 +1,17 @@
 #ifndef _GRAPH_H
 #define _GRAPH_H
 
+#define INFINITY 1000000000 //a billion
+
 #include "hash.h"  
 #include "heap.h"  
 #include <limits>
 #include <fstream>
+#include <iostream>
 #include <list>
 
 
-const int INFINITY= std::numeric_limits<int>::max();
+//const int INFINITY= std::numeric_limits<int>::max();
 
 class Graph{
 
@@ -34,6 +37,8 @@ class Graph{
                 std::list<Edge> adjlist; //adjacency list
                 Node *path; 
         };
+        
+        void printPath(Node *v, std::ofstream& outputFile);
 
         std::list<Node> Node_List;
     

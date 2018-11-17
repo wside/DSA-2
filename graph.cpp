@@ -35,10 +35,19 @@ void Graph::load(std::ifstream& inputFile){
             Edge edge ;
             edge.cost = std::stoi(word);
             edge.nextNode = new Node;
-            edge.nextNode->name = second_vertex;
-            bool b;
-            Node *t =  static_cast<Node*> (Node_HT.getPointer(first_vertex, &b));     
+            bool b1;
+            edge.nextNode = static_cast<Node*> (Node_HT.getPointer(second_vertex, &b1));     
+            //edge.nextNode->name = second_vertex;
+            bool b2;
+            Node *t =  static_cast<Node*> (Node_HT.getPointer(first_vertex, &b2));     
             (t->adjlist).push_back(edge);
+
+            //testnemch
+            //std::cout << "first_vertex: " << first_vertex << std::endl;
+            //std::cout << "second_vertex: " << second_vertex << std::endl;
+            //std::cout << "edge.cost: " << edge.cost << std::endl;
+            //std::cout << edge.nextNode->name << std::endl;
+            //end of testbecnh
         }
     
         type = (type+1)%3;
@@ -76,22 +85,30 @@ void Graph::dijkstra(std::string Node_x_name){
         Node *v;  //Node v = smallest unknown distance vertex;
 		delMinCheck = gHeap.deleteMin(&stringTmp, &key, &v); //v is ppData  
         (v->known) = true;
-   
+        std::cout << "v name " << v->name << std::endl; //test del later
+        std::cout << "v->dist " << v->dist << std::endl; //test del later
         for ( auto const& w : (v->adjlist) ){
-        	bool b3;
-            Node *g = static_cast<Node*> (Node_HT.getPointer((w.nextNode->name), &b3));     
-         
-            if ((g->known)==false){  	 
+        	std::cout << "w next node name " << w.nextNode->name << std::endl; //test del later
+            //bool b3;
+            //Node *g = static_cast<Node*> (Node_HT.getPointer((w.nextNode->name), &b3));     
+             std::cout << "w.nextNode->known " << w.nextNode->known << std::endl; //test del later
+            if ((w.nextNode->known)==false){  	 
                 int cvw =  w.cost; //cost of edge from v to w
-                if ( v->dist + cvw < (g->dist)){
+                 std::cout << "w.nextNode->dist orig " << w.nextNode->dist << std::endl; //test del later
+                 std::cout << "cvw " << cvw << std::endl; //test del later
+                  
+                if ( v->dist + cvw < (w.nextNode->dist)){
                 	//update w
-                	g->dist = v->dist + cvw;
-                	gHeap.setKey(w.nextNode->name, g->dist);
-                	g->path  = new Node;
-                	g->path = v;
+                	w.nextNode->dist = v->dist + cvw;
+                     std::cout << "w.nextNode->dist after " << w.nextNode->dist << std::endl; //test del later
+                	gHeap.setKey(w.nextNode->name, w.nextNode->dist);
+                	w.nextNode->path  = new Node;
+                	w.nextNode->path = v;
+                     std::cout << "w.nextNode->path->name " << w.nextNode->path->name << std::endl; //test del later
                 }
-            }      
+            }     
         }
+          std::cout << "---------------------" << std::endl; //test del later
 	}	
 }
 
@@ -102,9 +119,22 @@ void Graph::output(std::string outFile_name){
     ofs.open(outFile_name, std::ofstream::out);
     
     for (auto const& i : Node_List) {
+        
+        ofs <<  i.name << ": ";
+        
+        if (i.path==NULL && i.name == startNode)
+            ofs << i.dist << " [" << i.name << "]" << std::endl; 
+        else if (i.path==NULL)
+            ofs << "NO PATH" << std::endl;
+        else if (i.path != NULL){
+            ofs << i.dist << " [";
+            printPath(i.path, ofs);    
+            ofs << ", " << i.name << "]" << std::endl; 
+        }
+        /*
         std::string printPath;
             	 
-     	Node *path = i.path;
+        Node *path = i.path;
      	while(path !=NULL){
      	    printPath = (path->name) + ", " + printPath;  
             if ( path->name==startNode)
@@ -115,8 +145,21 @@ void Graph::output(std::string outFile_name){
         if (path==NULL && i.name!=startNode)
             ofs <<  i.name << ": " << "NO PATH" << std::endl; 
         else
-            ofs <<   i.name << ": " << i.dist << " [" << printPath << i.name << "]"  << std::endl; 
+           ofs <<   i.name << ": " << i.dist << " [" << printPath << i.name << "]"  << std::endl; 
+   
+        */     
     }
 
     ofs.close(); //close the output file
+}
+
+
+void Graph::printPath(Node *v, std::ofstream& outputFile){
+    //std::cout<< "here2";
+    if (v->path != NULL){
+        //std::cout << v->path << std::endl;
+        printPath(v->path, outputFile);
+        outputFile << ", ";
+    }
+    outputFile << v->name;
 }
