@@ -21,20 +21,20 @@ void getUserInput(std::string message, std::string &ref){
 }
 
 
-void loadGraph(){
+void loadFile(){
     getUserInput("Enter name of graph file: ", graphFile_name);
     G_File.open(graphFile_name, std::ifstream::in); 
     while (!G_File){
         G_File.clear();
         std::cout << "File cannot be opened, please try agian with valid file name." << std::endl;
-        loadGraph();
+        loadFile();
     }
 }
 
 
 int main(){
 
-    loadGraph(); //load input file into main
+    loadFile(); //load input file into main
 
     Graph myGraph; //declare Graph class object
     

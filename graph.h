@@ -1,17 +1,13 @@
 #ifndef _GRAPH_H
 #define _GRAPH_H
 
-#define INFINITY 1000000000 //a billion
+#define INFINITY 2000000000 //2 billion
 
 #include "hash.h"  
 #include "heap.h"  
-#include <limits>
 #include <fstream>
-#include <iostream>
 #include <list>
 
-
-//const int INFINITY= std::numeric_limits<int>::max();
 
 class Graph{
 
