@@ -26,6 +26,7 @@ void Graph::load(std::ifstream& inputFile){
         	    node.name = word;
                 node.known = false;
         	    node.dist = INFINITY;
+                node.path = NULL;
         	    Node_List.push_back(node);
         	    Node_HT.setPointer(word, &Node_List.back());
         	    totalNodeCount++;
@@ -34,7 +35,6 @@ void Graph::load(std::ifstream& inputFile){
         else{   //the third word of each line, means type == 0
             Edge edge ;
             edge.cost = std::stoi(word);
-            edge.nextNode = new Node;
             bool b1;
             edge.nextNode = static_cast<Node*> (Node_HT.getPointer(second_vertex, &b1));     
             //edge.nextNode->name = second_vertex;
@@ -87,7 +87,6 @@ void Graph::dijkstra(std::string Node_x_name){
                 	//update w
                 	w.nextNode->dist = v->dist + cvw;
                 	gHeap.setKey(w.nextNode->name, w.nextNode->dist);
-                	w.nextNode->path  = new Node;
                 	w.nextNode->path = v;
                 }
             }     
