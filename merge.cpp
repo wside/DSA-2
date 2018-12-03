@@ -43,15 +43,14 @@ int main(){
             for (int i=0; i<lenA+1; i++){
                 if (stringC[i+j-1]==stringA[i-1]){ 
                     if (arr[j][i-1])
-                        arr[j][i] = arr[j][i-1]; //same as left
+                        arr[j][i] = arr[j][i-1]; //same as left if left is True
                 }
                 if (stringC[i+j-1]==stringB[j-1]){
                     if (arr[j-1][i])
-                        arr[j][i] = arr[j-1][i]; //same as above
+                        arr[j][i] = arr[j-1][i]; //same as above if above is True
                 }
-                else if (stringC[i+j-1]!=stringA[i-1]){
+                else if (stringC[i+j-1]!=stringA[i-1])
                     arr[j][i] = 0;
-                }  
             }
         }
         
@@ -81,4 +80,3 @@ int main(){
     return 0;
 
 } //end of main    
-
