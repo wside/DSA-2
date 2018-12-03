@@ -8,7 +8,8 @@
 #include <algorithm> //std::max
 #include <ctime> //del later if not used
 
-int arr[1001][2001] = {0};
+bool arr[1001][2001] = {0};
+
 
 int main(){
     std::ifstream ifs;
@@ -21,6 +22,7 @@ int main(){
     std::cin >> inFile_name;
     ifs.open(inFile_name, std::ifstream::in);
    
+    arr[0][0] = 1; //never gets overwritten 
     while(!ifs.eof()){
         ifs >> stringA >> stringB >> stringC;
         if (ifs.eof()) //makes sure last line doesn't duplicate
@@ -31,26 +33,55 @@ int main(){
         lenC = stringC.length();
         std::cout << lenA << " " <<  lenB << " " << lenC << std::endl; //testing, del later
         
-      //  if (lenC != lenA+lenB){ //quick check
-      //       std::cout << "*** NOT A MERGE ***" << std::endl;
-       //      continue;
-       //  }
+        if (lenC != lenA+lenB){ //quick length check
+            std::cout << "*** NOT A MERGE ***" << std::endl;
+             continue;
+        }
         
-        for (int i=0; i<lenA; i++){
-            for (int j=0; j<lenC; j++){
-                if (stringA[i]==stringC[j])
-                    arr[i+1][j+1] = arr[i][j] + 1;
-                else
-                    arr[i+1][j+1] = std::max(arr[i+1][j],arr[i][j+1]);
+        for (int i=1; i<lenA+1; i++){ //fill first row (go down width of array)
+            if (stringC[i-1] == stringA[i-1])
+                arr[0][i] = arr[0][i-1];
+            else 
+                arr[0][i] = 0;
+        }
 
+        for (int j=1; j<lenB+1; j++){ //fill first column (go down height of array)
+            if (stringC[j-1] == stringB[j-1])
+                arr[j][0] = arr[j-1][0];
+            else
+                arr[j][0] = 0;
+        }
+        
+        for (int j=1; j<lenB+1; j++){ //fill rest of matrix
+            for (int i=1; i<lenA+1; i++){
+                  std::cout << "j,i: " << j << ", " << i << std::endl;
+                if (stringC[i+j-1]==stringA[i-1]){ 
+                    std::cout << "hit stringA" << std::endl;
+                    std::cout << i+j-1 << " " << stringC[i+j-1] << ", " << i-1 << " " << stringA[i-1] << std::endl;
+                    std::cout << "arr[j][i-1] " << arr[j][i-1] << std::endl;
+                    if (arr[j][i-1]==1)
+                        arr[j][i] = arr[j][i-1]; //same as left
+                    std::cout << "set a[j][i] " << arr[j][i]<< std::endl;
+                }
+                if (stringC[i+j-1]==stringB[j-1]){
+                    std::cout << "hit stringB" << std::endl;
+                    std::cout << i+j-1 << " " << stringC[i+j-1] << ", " << j-1 << " " << stringB[j-1] << std::endl;
+                    std::cout << "arr[j-1][i] " << arr[j-1][i]<< std::endl;
+                    if (arr[j-1][i]==1)
+                        arr[j][i] = arr[j-1][i]; //same as above
+                    std::cout << "set a[j][i] " << arr[j][i]<< std::endl;
+                }
+                else if (stringC[i+j-1]!=stringA[i-1]){
+                    arr[j][i] = 0;
+                }
+                 std::cout << "------------------------- " << std::endl;
             }
-
         }
 
    //
-    for (int i = 0; i < lenA+1; ++i)
+    for (int i = 0; i < lenB+1; ++i)
     {
-        for (int j = 0; j < lenC+1; ++j)
+        for (int j = 0; j < lenA+1; ++j)
         {
             std::cout << arr[i][j] << ' ';
         }
