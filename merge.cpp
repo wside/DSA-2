@@ -5,7 +5,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <algorithm> //std::max
 
 bool arr[1001][2001] = {0}; //global 2D matrix for dynamic programming implementation
 
@@ -43,11 +42,11 @@ int main(){
         for (int j=0; j<lenB+1; j++){ //fill in matrix
             for (int i=0; i<lenA+1; i++){
                 if (stringC[i+j-1]==stringA[i-1]){ 
-                    if (arr[j][i-1]==1)
+                    if (arr[j][i-1])
                         arr[j][i] = arr[j][i-1]; //same as left
                 }
                 if (stringC[i+j-1]==stringB[j-1]){
-                    if (arr[j-1][i]==1)
+                    if (arr[j-1][i])
                         arr[j][i] = arr[j-1][i]; //same as above
                 }
                 else if (stringC[i+j-1]!=stringA[i-1]){
@@ -59,13 +58,13 @@ int main(){
         //backtrack to get CAPs placement for stringA
         j = lenB;
         i = lenA;   
-        if(arr[j][i]==1){  //last matrix entry indicates if merge is valid
+        if(arr[j][i]){  //last matrix entry indicates if merge is valid (1 if valid)
             while(j>=0 && i>=0){
                 if (j==0 && i==0)
                     break;
-                if (arr[j-1][i]==1)   //try going up first
+                if (arr[j-1][i])   //try going up first
                     j--;      
-                else if (arr[j][i-1]==1){  //then try going left
+                else if (arr[j][i-1]){  //then try going left
                     stringC[i+j-1] = toupper(stringC[i+j-1]); //changes stringC in place
                     i--;
                 }
@@ -82,3 +81,4 @@ int main(){
     return 0;
 
 } //end of main    
+
