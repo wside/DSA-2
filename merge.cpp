@@ -28,32 +28,31 @@ int main(){
         ifs >> stringA >> stringB >> stringC;
         if (ifs.eof()) //makes sure last line doesn't duplicate
             break;
-        std::cout << stringA << " " <<  stringB << " " << stringC << std::endl; //testing, del later
+       // std::cout << stringA << " " <<  stringB << " " << stringC << std::endl; //testing, del later
         lenA = stringA.length();
         lenB = stringB.length();
         lenC = stringC.length();
-        std::cout << lenA << " " <<  lenB << " " << lenC << std::endl; //testing, del later
+       // std::cout << lenA << " " <<  lenB << " " << lenC << std::endl; //testing, del later
         
         if (lenC != lenA+lenB){ //quick length check
-            std::cout << "*** NOT A MERGE ***" << std::endl;
+           // std::cout << "*** NOT A MERGE ***" << std::endl;
              continue;
         }
         
-        /*
-        for (int i=1; i<lenA+1; i++){ //fill first row (go down width of array)
+        
+    /*    for (int i=1; i<lenA+1; i++){ //fill first row (go down width of array)
             if (stringC[i-1] == stringA[i-1])
                 arr[0][i] = arr[0][i-1];
             else 
                 arr[0][i] = 0;
         }
-
         for (int j=1; j<lenB+1; j++){ //fill first column (go down height of array)
             if (stringC[j-1] == stringB[j-1])
                 arr[j][0] = arr[j-1][0];
             else
                 arr[j][0] = 0;
-        }
-        */
+        }*/
+        
         for (int j=0; j<lenB+1; j++){ //fill rest of matrix
             for (int i=0; i<lenA+1; i++){
                 //  std::cout << "j,i: " << j << ", " << i << std::endl;
@@ -80,23 +79,12 @@ int main(){
         }
 
 
-
-   //testbench, del later
-    for (int i = 0; i < lenB+1; ++i)
-    {
-        for (int j = 0; j < lenA+1; ++j)
-        {
-            std::cout << arr[i][j] << ' ';
-        }
-        std::cout << std::endl;
-    }
-
-// 
         j = lenB;
         i = lenA;   
         if(arr[j][i]==1){  //last entry indicates if merge is valid
-            std::cout << "merge is correct" << std::endl;
-            while(j!=0 || i!=0){
+            while(j>=0 && i>=0){
+                if (j==0 && i==0)
+                    break;
                 if (arr[j-1][i]==1){   //try going up first
                     //std::cout << "goingup" << std::endl;
                     j--;
@@ -107,17 +95,36 @@ int main(){
                     i--;
                 }
             }
-                
-            
-         std::cout << "stringC fixed: " << stringC << std::endl; //testing, del later
-        }
-        else
-            std::cout << "*** NOT A MERGE ***" << std::endl;
-        
-        
-        std::cout << "------------------------- " << std::endl;
+           /*
+            while(j>=0 && i>=0){
+                std::cout << "j,i: " << j << ", " << i << std::endl;
+                if (j==0 && i==0)
+                    break;
+                if (j==0){
+                std::cout << "j is zero " << std::endl; //testing, del later
+                   stringC[i+j-1] = toupper(stringC[i+j-1]);
+                    i--;
+                }
+                if(i==0){
+                    std::cout << "i is zero " << std::endl; //testing, del later
+                    j--;
+                }
 
+            }
+            */
+            
+        // std::cout << "stringC fixed: " << stringC << std::endl; //testing, del later
+        }
+        
+        else if (arr[j][i]==0)
+            ;
+         //   std::cout << "*** NOT A MERGE ***" << std::endl;
+        
+        
+        //std::cout << "------------------------- " << std::endl;
+        
     }
+
         
     
 
@@ -131,10 +138,11 @@ int main(){
     std::cin >> outFile_name;
     ofs.open(outFile_name, std::ofstream::out);
     //process the output file
-    std::cout << "------------------" << std::endl; //for testing, delete later
-    std::cout << "outputfile processed" << std::endl; //for testing, delete later
+    //std::cout << "------------------" << std::endl; //for testing, delete later
+   // std::cout << "outputfile processed" << std::endl; //for testing, delete later
     
     ofs.close(); //close the output file
+    
 
     return 0;
 
