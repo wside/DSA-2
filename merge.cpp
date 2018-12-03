@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include <fstream>
-#include <ctime>
+
 bool arr[1001][2001] = {0}; //global 2D matrix for dynamic programming implementation
 
 
@@ -25,17 +25,13 @@ int main(){
     std::cin >> outFile_name;
     ofs.open(outFile_name, std::ofstream::out);
     
-    clock_t begin = clock();
     while(!ifs.eof()){
-        ifs >> stringA >> stringB >> stringC;
-       
+        ifs >> stringA >> stringB >> stringC;       
         if (ifs.eof()) //makes sure last line doesn't duplicate
             break;    
         lenA = stringA.length();
         lenB = stringB.length();
         lenC = stringC.length();
-         std::cout << stringA << " " <<  stringB << " " << stringC << std::endl; //testing, del later
-         std::cout << lenA << " " <<  lenB << " " << lenC << std::endl; //testing, del later
      
         if (lenC != lenA+lenB){ //quick length check
              ofs << "*** NOT A MERGE ***" << std::endl; 
@@ -43,9 +39,9 @@ int main(){
          }
 
         //fill T/F into boolean matrix 
-        for (int i=0; i<lenA+1; i++){  //matrix is i,j indexced 
+        for (int i=0; i<lenA+1; i++){  //matrix is i,j indexed 
             for (int j=0; j<lenB+1; j++){
-                arr[i][j]=0;      //presets array to false as it goes //tested faster than big array fill or memset
+                arr[i][j]=0;      //presets array to false as it goes //tested faster than big array fill or memset placed before for loop
                 if (i==0 && j==0) 
                     arr[i][j] = true; 
                 else if (i==0 && stringB[j-1]==stringC[j-1]) //A is empty 
@@ -65,17 +61,6 @@ int main(){
         i = lenA;  
         j = lenB;
         if(arr[i][j]){  //last matrix entry indicates if merge is valid (1 if valid)
-               //testbench, del later
-      for (int i = 0; i < lenA+1; ++i){
-        for (int j = 0; j < lenB+1; ++j){
-            std::cout << arr[i][j] << ' ';
-        }
-        std::cout << std::endl;
-    }
-     std::cout << "----------------------------------------------------------------"<<std::endl;
-
-
-
             while(i>=0 && j>=0){
                 if (i==0 && j==0)
                     break;
@@ -93,10 +78,6 @@ int main(){
             ofs << "*** NOT A MERGE ***" << std::endl; 
     
     } //end of big while loop
-
-    clock_t end = clock();
-    double elapsed_secs_load = double(end - begin) / CLOCKS_PER_SEC;
-    std::cout << "Total time (in seconds) to apply Dijkstra's algorithm: " << elapsed_secs_load << std::endl;
 
     ofs.close(); //close the output file
     return 0;
