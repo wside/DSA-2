@@ -5,36 +5,58 @@
 
 #include <iostream>
 #include <fstream>
-#include <ctime>
+#include <ctime> //del later if not used
 
+int arr[1001][2001] = {0};
 
 int main(){
     std::ifstream ifs;
-    std::string inFile_name;
     std::ofstream ofs;
+    std::string inFile_name;
     std::string outFile_name; 
-   
-    std::string line;
-    short type = 1;
+    std::string stringA;
+    std::string stringB;
+    std::string stringC;
+    int lenA;
+    int lenB;
+    int lenC;
 
     std::cout << "Enter name of input file: ";
     std::cin >> inFile_name;
     ifs.open(inFile_name, std::ifstream::in);
    
-    while (getline(ifs, line)){
-        if (type==1) //the first string
-            std::cout << type << std::endl;
-        else if (type==2)  //the second string
-            std::cout << type << std::endl;
-        else //type=0, the merged string
-            std::cout << type << std::endl;
+    while(!ifs.eof()){
+        ifs >> stringA >> stringB >> stringC;
+        if (ifs.eof()) //makes sure last line doesn't duplicate
+            break;
+        std::cout << stringA << " " <<  stringB << " " << stringC << std::endl; //testing, del later
+        lenA = stringA.length();
+        lenB = stringB.length();
+        lenC = stringC.length();
+        std::cout << lenA << " " <<  lenB << " " << lenC << std::endl; //testing, del later
+        
+        if (lenC != lenA+lenB){ //quick check
+             std::cout << "*** NOT A MERGE ***" << std::endl;
+             continue;
+         }
+        
+          std::cout << "testst" << std::endl; 
+        //for (inti=0; i < lenA; i++){
+        //}
+           
+        
 
-        std::cout << line << std::endl;
-        type = (type+1)%3;
+          
+
+
+
     }
+        
+    
 
    //2d matrix
    //do stuff
+    
 
 
 ////////////////////////////////////////////////////
