@@ -17,6 +17,7 @@ int main(){
     std::string inFile_name, outFile_name; 
     std::string stringA, stringB,stringC;
     int lenA, lenB, lenC;
+    int j, i; 
 
     std::cout << "Enter name of input file: ";
     std::cin >> inFile_name;
@@ -38,6 +39,7 @@ int main(){
              continue;
         }
         
+        /*
         for (int i=1; i<lenA+1; i++){ //fill first row (go down width of array)
             if (stringC[i-1] == stringA[i-1])
                 arr[0][i] = arr[0][i-1];
@@ -51,34 +53,35 @@ int main(){
             else
                 arr[j][0] = 0;
         }
-        
-        for (int j=1; j<lenB+1; j++){ //fill rest of matrix
-            for (int i=1; i<lenA+1; i++){
-                  std::cout << "j,i: " << j << ", " << i << std::endl;
+        */
+        for (int j=0; j<lenB+1; j++){ //fill rest of matrix
+            for (int i=0; i<lenA+1; i++){
+                //  std::cout << "j,i: " << j << ", " << i << std::endl;
                 if (stringC[i+j-1]==stringA[i-1]){ 
-                    std::cout << "hit stringA" << std::endl;
-                    std::cout << i+j-1 << " " << stringC[i+j-1] << ", " << i-1 << " " << stringA[i-1] << std::endl;
-                    std::cout << "arr[j][i-1] " << arr[j][i-1] << std::endl;
+                   // std::cout << "hit stringA" << std::endl;
+                   // std::cout << i+j-1 << " " << stringC[i+j-1] << ", " << i-1 << " " << stringA[i-1] << std::endl;
+                   //std::cout << "arr[j][i-1] " << arr[j][i-1] << std::endl;
                     if (arr[j][i-1]==1)
                         arr[j][i] = arr[j][i-1]; //same as left
-                    std::cout << "set a[j][i] " << arr[j][i]<< std::endl;
+                    //std::cout << "set a[j][i] " << arr[j][i]<< std::endl;
                 }
                 if (stringC[i+j-1]==stringB[j-1]){
-                    std::cout << "hit stringB" << std::endl;
-                    std::cout << i+j-1 << " " << stringC[i+j-1] << ", " << j-1 << " " << stringB[j-1] << std::endl;
-                    std::cout << "arr[j-1][i] " << arr[j-1][i]<< std::endl;
+                   // std::cout << "hit stringB" << std::endl;
+                   // std::cout << i+j-1 << " " << stringC[i+j-1] << ", " << j-1 << " " << stringB[j-1] << std::endl;
+                   // std::cout << "arr[j-1][i] " << arr[j-1][i]<< std::endl;
                     if (arr[j-1][i]==1)
                         arr[j][i] = arr[j-1][i]; //same as above
-                    std::cout << "set a[j][i] " << arr[j][i]<< std::endl;
+                    //std::cout << "set a[j][i] " << arr[j][i]<< std::endl;
                 }
                 else if (stringC[i+j-1]!=stringA[i-1]){
                     arr[j][i] = 0;
-                }
-                 std::cout << "------------------------- " << std::endl;
+                }  
             }
         }
 
-   //
+
+
+   //testbench, del later
     for (int i = 0; i < lenB+1; ++i)
     {
         for (int j = 0; j < lenA+1; ++j)
@@ -88,12 +91,31 @@ int main(){
         std::cout << std::endl;
     }
 
-//  
+// 
+        j = lenB;
+        i = lenA;   
+        if(arr[j][i]==1){  //last entry indicates if merge is valid
+            std::cout << "merge is correct" << std::endl;
+            while(j!=0 || i!=0){
+                if (arr[j-1][i]==1){   //try going up first
+                    //std::cout << "goingup" << std::endl;
+                    j--;
+                }       
+                else if (arr[j][i-1]==1){  //then try left
+                    //std::cout << "goingleft" << std::endl;
+                    stringC[i+j-1] = toupper(stringC[i+j-1]);
+                    i--;
+                }
+            }
+                
+            
+         std::cout << "stringC fixed: " << stringC << std::endl; //testing, del later
+        }
+        else
+            std::cout << "*** NOT A MERGE ***" << std::endl;
         
-
-          
-
-
+        
+        std::cout << "------------------------- " << std::endl;
 
     }
         
